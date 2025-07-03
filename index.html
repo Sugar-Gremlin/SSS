@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sugar Scribble Studio</title>
+<style>
+  :root {
+    --color-bg-light: #fff7f8;
+    --color-bg-dark: #1a1a2e;
+    --color-primary: #f28ab2; /* soft pastel pink */
+    --color-accent: #ff0054;  /* bold pink/red */
+    --color-text-light: #222;
+    --color-text-dark: #eee;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    transition: background 0.3s, color 0.3s;
+  }
+  body.dark {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+  header {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 2px solid var(--color-accent);
+  }
+  #logo {
+    width: 60px; height: 60px;
+    background: var(--color-primary);
+    border-radius: 12px;
+    margin-right: 1rem;
+    display: flex; justify-content: center; align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    user-select: none;
+  }
+  h1 {
+    margin: 0;
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--color-accent);
+  }
+  #quote {
+    margin: 1rem 2rem;
+    font-style: italic;
+    font-size: 1.25rem;
+    min-height: 1.5em;
+  }
+  #darkToggle {
+    margin-left: auto;
+    cursor: pointer;
+    background: var(--color-accent);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  #darkToggle:hover {
+    background: var(--color-primary);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div id="logo">SG</div>
+  <h1>Sugar Scribble Studio</h1>
+  <button id="darkToggle">🌙 Dark Mode</button>
+</header>
+
+<main>
+  <div id="quote"></div>
+</main>
+
+<script>
+  // Dark mode toggle logic with localStorage
+  const darkToggle = document.getElementById('darkToggle');
+  const body = document.body;
+
+  function setDarkMode(isDark) {
+    if (isDark) {
+      body.classList.add('dark');
+      darkToggle.textContent = '☀️ Light Mode';
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      body.classList.remove('dark');
+      darkToggle.textContent = '🌙 Dark Mode';
+      localStorage.setItem('darkMode', 'false');
+    }
+  }
+
+  darkToggle.addEventListener('click', () => {
+    setDarkMode(!body.classList.contains('dark'));
+  });
+
+  // Load saved preference
+  const saved = localStorage.getItem('darkMode');
+  setDarkMode(saved === 'true');
+
+  // Quotes rotation
+  const quotes = [
+    "Where imagination dances with color.",
+    "Scribbling stories through strokes and pixels.",
+    "Art that whispers, shouts, and inspires."
+  ];
+  let currentQuote = 0;
+  const quoteElem = document.getElementById('quote');
+
+  function showQuote() {
+    quoteElem.style.opacity = 0;
+    setTimeout(() => {
+      quoteElem.textContent = quotes[currentQuote];
+      quoteElem.style.opacity = 1;
+      currentQuote = (currentQuote + 1) % quotes.length;
+    }, 500);
+  }
+
+  showQuote();
+  setInterval(showQuote, 6000);
+</script>
+</body>
+</html>
